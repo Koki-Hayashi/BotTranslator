@@ -3,6 +3,9 @@ package com.bottranslator.api.client.messenger;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.bottranslator.api.client.messenger.model.send.ReplyMessage;
+import com.bottranslator.api.client.messenger.model.send.ThreadSetting;
+import com.bottranslator.service.ArgsService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mashape.unirest.http.HttpResponse;
@@ -10,29 +13,25 @@ import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
 
-import com.bottranslator.api.client.messenger.model.send.GreetingRegister;
-import com.bottranslator.api.client.messenger.model.send.ReplyMessage;
-import com.bottranslator.service.ArgsService;
-
 public class MessengerApiClient
 {
 	private Logger log = LoggerFactory.getLogger(MessengerApiClient.class);
 
-	private static final String REGISTER_WELCOME_MSG = "https://graph.facebook.com/v2.6/me/thread_settings";
+	private static final String THREAD_SETTING_API = "https://graph.facebook.com/v2.6/me/thread_settings";
 	private static final String SEND_MSG = "https://graph.facebook.com/v2.6/me/messages";
 
 	private ObjectMapper mapper = new ObjectMapper();
 
-	public void registerWelcomeText(GreetingRegister greetingRegister) throws JsonProcessingException, UnirestException
+	public void sendThreadSetting(ThreadSetting threadSetting) throws JsonProcessingException, UnirestException
 	{
-		log.debug("Registering welcome text : " + greetingRegister);
-		HttpResponse<JsonNode> jsonResponse = Unirest.post(REGISTER_WELCOME_MSG)
+		log.info("Registering get started button : " + threadSetting);
+		HttpResponse<JsonNode> jsonResponse = Unirest.post(THREAD_SETTING_API)
 			.header("Content-Type", "application/json")
 			.queryString("access_token", ArgsService.getPageAccessToken())
-			.body(mapper.writeValueAsString(greetingRegister))
+			.body(mapper.writeValueAsString(threadSetting))
 			.asJson();
 
-		printDebugLog(jsonResponse);
+		printLog(jsonResponse);
 	}
 
 	public void replyMessage(ReplyMessage replyMessage) throws UnirestException, JsonProcessingException
@@ -43,16 +42,16 @@ public class MessengerApiClient
 			.body(mapper.writeValueAsString(replyMessage))
 			.asJson();
 
-		printDebugLog(jsonResponse);
+		printLog(jsonResponse);
 	}
 
-	private void printDebugLog(HttpResponse response)
+	private void printLog(HttpResponse response)
 	{
-		log.debug("--HttpResponse--");
-		log.debug(String.valueOf(response.getStatus()));
-		log.debug(response.getStatusText());
-		log.debug(String.valueOf(response.getHeaders()));
-		log.debug(String.valueOf(response.getRawBody()));
+		log.info("--HttpResponse--");
+		log.info(String.valueOf(response.getStatus()));
+		log.info(response.getStatusText());
+		log.info(String.valueOf(response.getHeaders()));
+		log.info(String.valueOf(response.getRawBody()));
 	}
 
 }

@@ -1,13 +1,12 @@
 package com.bottranslator.process;
 
 import java.io.IOException;
+import java.util.Map;
 
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.apache.commons.lang3.StringUtils;
 import org.xml.sax.SAXException;
-
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.mashape.unirest.http.exceptions.UnirestException;
 
 import com.bottranslator.api.client.messenger.MessengerApiClient;
 import com.bottranslator.api.client.messenger.model.receive.UserMessage;
@@ -17,6 +16,10 @@ import com.bottranslator.api.client.messenger.model.send.Recipient;
 import com.bottranslator.api.client.messenger.model.send.ReplyMessage;
 import com.bottranslator.api.client.ms.LANGUAGE;
 import com.bottranslator.api.client.ms.MSApiClient;
+import com.bottranslator.data.cache.LanguageSettingCache;
+import com.bottranslator.data.cache.model.LanguageSetting;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.mashape.unirest.http.exceptions.UnirestException;
 
 public class ReplyProcess extends Thread
 {
@@ -25,6 +28,9 @@ public class ReplyProcess extends Thread
 	private MessengerApiClient messengerApiClient = new MessengerApiClient();
 
 	private UserMessage userMessage;
+	private Map<String, LanguageSetting> cache = LanguageSettingCache.getCache();
+
+	private static final int ASSUME_NOT_TALKING_TO_BOT = 10;
 
 	public ReplyProcess(UserMessage userMessage)
 	{
@@ -45,13 +51,14 @@ public class ReplyProcess extends Thread
 						}
 
 						String senderId = messaging.getSender().getId();
-						String userText = messaging.getMessage().getText();
+						String text = messaging.getMessage().getText();
 
-						LANGUAGE from = LANGUAGE.ENGLISH;
-						LANGUAGE to = LANGUAGE.GERMAN;
-
-						String replyText = getTranslation(userText, from, to);
-						replyMessage(senderId, replyText);
+						if (isUserTalkingToBot(text)) {
+							sendLanguageSettingMenu(senderId);
+						} else
+						{
+							replyTranslation(senderId, text);
+						}
 
 					}
 					catch (UnirestException | ParserConfigurationException | SAXException | IOException e)
@@ -62,35 +69,53 @@ public class ReplyProcess extends Thread
 		});
 	}
 
-	private void sendLanguageSetting(String senderId) throws JsonProcessingException, UnirestException
+	private boolean isUserTalkingToBot(String text)
+	{
+		return text !=null && StringUtils.containsIgnoreCase(text, "hi") && StringUtils.containsIgnoreCase(text, "bot") && text.length() < ASSUME_NOT_TALKING_TO_BOT;
+	}
+
+	private void sendLanguageSettingMenu(String senderId) throws JsonProcessingException, UnirestException
 	{
 		String text = "From which language?";
 		replyQuickRepliesMessage(senderId, text, LANGUAGE.getNameArray());
+	}
+
+	private void replyQuickRepliesMessage(String senderId, String text, String[] titleArray) throws UnirestException, JsonProcessingException
+	{
+		QuickReplies[] quickRepliesArray = new QuickReplies[titleArray.length];
+		for (int i = 0; i < quickRepliesArray.length; i++)
+		{
+			QuickReplies quickReplies = new QuickReplies();
+			quickReplies.setContentType("text");
+			quickReplies.setTitle(titleArray[i]);
+			quickRepliesArray[i] = quickReplies;
+		}
+
+		Message message = new Message();
+		message.setText(text);
+		message.setQuickReplies(quickRepliesArray);
+		Recipient recipient = new Recipient(senderId);
+
+		ReplyMessage replyMessage = new ReplyMessage(recipient, message);
+
+		messengerApiClient.replyMessage(replyMessage);
+	}
+
+	private void replyTranslation(String senderId, String userText) throws ParserConfigurationException, UnirestException, SAXException, IOException
+	{
+		LanguageSetting setting = cache.get(senderId);
+
+		LANGUAGE from = setting == null ? LANGUAGE.ENGLISH : setting.getFrom();
+		LANGUAGE to = setting == null ? LANGUAGE.GERMAN : setting.getTo();
+
+		String replyText = getTranslation(userText, from, to);
+		replyMessage(senderId, replyText);
 	}
 
 	private String getTranslation(String text, LANGUAGE from, LANGUAGE to)
 		throws UnirestException, ParserConfigurationException, SAXException, IOException
 	{
 		return msApiClient.getTranslation(text, from, to);
-	}
-
-	private void replyQuickRepliesMessage(String senderId, String text, String[] titleArray) throws UnirestException, JsonProcessingException
-	{
-		Recipient recipient = new Recipient(senderId);
-		QuickReplies[] quickRepliesArray = new QuickReplies[titleArray.length];
-		for (int i = 0; i < quickRepliesArray.length; i++)
-		{
-			QuickReplies quickReplies = quickRepliesArray[i];
-			quickReplies.setContentType("text");
-			quickReplies.setTitle(titleArray[i]);
-		}
-
-		Message message = new Message();
-		message.setText(text);
-		message.setQuickReplies(quickRepliesArray);
-		ReplyMessage replyMessage = new ReplyMessage(recipient, message);
-
-		messengerApiClient.replyMessage(replyMessage);
 	}
 
 	private void replyMessage(String senderId, String text) throws UnirestException, JsonProcessingException
