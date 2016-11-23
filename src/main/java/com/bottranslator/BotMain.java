@@ -36,8 +36,9 @@ public class BotMain
 
 		post("/webhook", (req, res) -> { // assuming receiving only normal message
 			ObjectMapper mapper = new ObjectMapper();
+			log.info("--Request body--\n" + req.body());
 			UserMessage userMessage = mapper.readValue(req.body(), UserMessage.class);
-			log.debug("--User message--\n" + userMessage);
+			log.info("--User message--\n" + userMessage);
 
 			if ("page" .equals(userMessage.getObject()))
 			{

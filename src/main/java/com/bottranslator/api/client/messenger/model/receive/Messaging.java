@@ -18,6 +18,9 @@ public class Messaging
 	@JsonProperty("timestamp")
 	private Date timestamp;
 
+	@JsonProperty("postback")
+	private Postback postback;
+
 	public Sender getSender()
 	{
 		return sender;
@@ -58,6 +61,16 @@ public class Messaging
 		this.timestamp = timestamp;
 	}
 
+	public Postback getPostback()
+	{
+		return postback;
+	}
+
+	public void setPostback(Postback postback)
+	{
+		this.postback = postback;
+	}
+
 	@Override
 	public String toString()
 	{
@@ -66,6 +79,7 @@ public class Messaging
 			", recipient=" + recipient +
 			", message=" + message +
 			", timestamp=" + timestamp +
+			", postback=" + postback +
 			'}';
 	}
 }

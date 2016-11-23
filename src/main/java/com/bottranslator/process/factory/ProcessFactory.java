@@ -7,6 +7,7 @@ public class ProcessFactory
 {
 	public static Thread getProcess(UserMessage userMessage)
 	{
+
 		return new ReplyProcess(userMessage); // no other possible com.bottranslator.process type now
 	}
 }

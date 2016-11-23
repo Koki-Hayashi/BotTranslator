@@ -10,7 +10,7 @@ import com.bottranslator.service.ArgsService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.mashape.unirest.http.exceptions.UnirestException;
 
-public class SetWelcomeScreenMain
+public class SetThreadSettingMain
 {
 	private static final int ERROR_EXIT = 1;
 
@@ -19,7 +19,7 @@ public class SetWelcomeScreenMain
 
 	public void registerGreeting() throws JsonProcessingException
 	{
-		String welcomeText = "Hi! I'm a Flight Search Bot!!";
+		String welcomeText = "Hi! I'm a Translator Bot";
 
 		Greeting greeting = new Greeting(welcomeText);
 		ThreadSetting greetingRegister = new ThreadSetting();
@@ -41,12 +41,41 @@ public class SetWelcomeScreenMain
 		ThreadSetting getStartedBtnRegister = new ThreadSetting();
 		getStartedBtnRegister.setSettingType("call_to_actions");
 		getStartedBtnRegister.setThreadState("new_thread");
-		CallToAction callToActions = new CallToAction("get started");
+		CallToAction callToActions = new CallToAction();
+		callToActions.setPayload("get started");
 		getStartedBtnRegister.setCallToActions(new CallToAction[]{ callToActions});
 
 		try
 		{
 			messengerApiClient.sendThreadSetting(getStartedBtnRegister);
+		}
+		catch (UnirestException e)
+		{
+			e.printStackTrace();
+		}
+	}
+
+	public void registerPersistentMenu() throws JsonProcessingException
+	{
+		ThreadSetting peristentMEnu = new ThreadSetting();
+		peristentMEnu.setSettingType("call_to_actions");
+		peristentMEnu.setThreadState("existing_thread");
+
+		CallToAction languageFrom = new CallToAction();
+		languageFrom.setType("postback");
+		languageFrom.setTitle("Change language from");
+		languageFrom.setPayload("Change input language");
+
+		CallToAction languageTo = new CallToAction();
+		languageTo.setType("postback");
+		languageTo.setTitle("change setting");
+		languageTo.setPayload("Change output language");
+
+		peristentMEnu.setCallToActions(new CallToAction[]{ languageFrom, languageTo});
+
+		try
+		{
+			messengerApiClient.sendThreadSetting(peristentMEnu);
 		}
 		catch (UnirestException e)
 		{
@@ -64,10 +93,11 @@ public class SetWelcomeScreenMain
 			System.exit(ERROR_EXIT);
 		}
 
-		SetWelcomeScreenMain main = new SetWelcomeScreenMain();
+		SetThreadSettingMain main = new SetThreadSettingMain();
 
 		main.registerGreeting();
 		main.registerGetStartedBtn();
+		main.registerPersistentMenu();
 	}
 
 }

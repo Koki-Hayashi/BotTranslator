@@ -4,12 +4,33 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class CallToAction
 {
+	@JsonProperty("type")
+	private String type;
+
+	@JsonProperty("title")
+	private String title;
+
 	@JsonProperty("payload")
 	private String payload;
 
-	public CallToAction(String payload)
+	public String getType()
 	{
-		this.payload = payload;
+		return type;
+	}
+
+	public void setType(String type)
+	{
+		this.type = type;
+	}
+
+	public String getTitle()
+	{
+		return title;
+	}
+
+	public void setTitle(String title)
+	{
+		this.title = title;
 	}
 
 	public String getPayload()
@@ -26,7 +47,9 @@ public class CallToAction
 	public String toString()
 	{
 		return "CallToAction{" +
-			"payload='" + payload + '\'' +
+			"type='" + type + '\'' +
+			", title='" + title + '\'' +
+			", payload='" + payload + '\'' +
 			'}';
 	}
 }

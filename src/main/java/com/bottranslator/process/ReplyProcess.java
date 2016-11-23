@@ -50,6 +50,10 @@ public class ReplyProcess extends Thread
 							return; // not supported
 						}
 
+						if (messaging.getPostback() != null) {
+							return; // do nothing at the moment
+						}
+
 						String senderId = messaging.getSender().getId();
 						String text = messaging.getMessage().getText();
 
