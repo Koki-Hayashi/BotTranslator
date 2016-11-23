@@ -6,6 +6,7 @@ import com.bottranslator.api.client.messenger.MessengerApiClient;
 import com.bottranslator.api.client.messenger.model.send.CallToAction;
 import com.bottranslator.api.client.messenger.model.send.Greeting;
 import com.bottranslator.api.client.messenger.model.send.ThreadSetting;
+import com.bottranslator.constant.Payload;
 import com.bottranslator.service.ArgsService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.mashape.unirest.http.exceptions.UnirestException;
@@ -42,7 +43,7 @@ public class SetThreadSettingMain
 		getStartedBtnRegister.setSettingType("call_to_actions");
 		getStartedBtnRegister.setThreadState("new_thread");
 		CallToAction callToActions = new CallToAction();
-		callToActions.setPayload("get started");
+		callToActions.setPayload(Payload.GET_STARTED_PAYLOAD);
 		getStartedBtnRegister.setCallToActions(new CallToAction[]{ callToActions});
 
 		try
@@ -63,13 +64,13 @@ public class SetThreadSettingMain
 
 		CallToAction languageFrom = new CallToAction();
 		languageFrom.setType("postback");
-		languageFrom.setTitle("Change language from");
-		languageFrom.setPayload("Change input language");
+		languageFrom.setTitle("Change input language");
+		languageFrom.setPayload(Payload.MAIN_MENU_CHANGE_INPUT_LANGUAGE);
 
 		CallToAction languageTo = new CallToAction();
 		languageTo.setType("postback");
-		languageTo.setTitle("change setting");
-		languageTo.setPayload("Change output language");
+		languageTo.setTitle("Change output language");
+		languageTo.setPayload(Payload.MAIN_MENU_CHANGE_OUTPUT_LANGUAGE);
 
 		peristentMEnu.setCallToActions(new CallToAction[]{ languageFrom, languageTo});
 

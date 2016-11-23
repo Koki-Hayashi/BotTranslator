@@ -4,6 +4,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Message
 {
+	@JsonProperty("quick_reply")
+	private QuickReply quickReply;
+
 	@JsonProperty("mid")
 	private String mid;
 
@@ -12,6 +15,16 @@ public class Message
 
 	@JsonProperty("seq")
 	private int seq;
+
+	public QuickReply getQuickReply()
+	{
+		return quickReply;
+	}
+
+	public void setQuickReply(QuickReply quickReply)
+	{
+		this.quickReply = quickReply;
+	}
 
 	public String getMid()
 	{
@@ -47,7 +60,8 @@ public class Message
 	public String toString()
 	{
 		return "Message{" +
-			"mid='" + mid + '\'' +
+			"quickReply=" + quickReply +
+			", mid='" + mid + '\'' +
 			", text='" + text + '\'' +
 			", seq=" + seq +
 			'}';

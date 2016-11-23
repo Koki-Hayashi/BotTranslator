@@ -7,8 +7,8 @@ public enum LANGUAGE
 {
 	ENGLISH("English", "en"),
 	GERMAN("German", "de"),
-	JAPANESE("JAPANESE", "en"),
-	RUSSIAN("RUSSIAN", "en");
+	JAPANESE("JAPANESE", "ja"),
+	RUSSIAN("RUSSIAN", "ru");
 
 	private String name;
 	private String countryCode;
@@ -43,5 +43,13 @@ public enum LANGUAGE
 	public String getCountryCode()
 	{
 		return countryCode;
+	}
+
+	public static LANGUAGE getFromName(String name) {
+		for (LANGUAGE language : values() ) {
+			if(language.getName().toLowerCase().equals(name.toLowerCase())) return language;
+		}
+
+		return null;
 	}
 }

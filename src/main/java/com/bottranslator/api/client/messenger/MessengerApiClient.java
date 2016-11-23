@@ -24,7 +24,7 @@ public class MessengerApiClient
 
 	public void sendThreadSetting(ThreadSetting threadSetting) throws JsonProcessingException, UnirestException
 	{
-		log.info("Registering get started button : " + threadSetting);
+		log.info("Sending thread setting : " + threadSetting);
 		HttpResponse<JsonNode> jsonResponse = Unirest.post(THREAD_SETTING_API)
 			.header("Content-Type", "application/json")
 			.queryString("access_token", ArgsService.getPageAccessToken())
@@ -36,6 +36,7 @@ public class MessengerApiClient
 
 	public void replyMessage(ReplyMessage replyMessage) throws UnirestException, JsonProcessingException
 	{
+		log.info("Sending message : " + replyMessage);
 		HttpResponse<JsonNode> jsonResponse = Unirest.post(SEND_MSG)
 			.header("Content-Type", "application/json")
 			.queryString("access_token", ArgsService.getPageAccessToken())

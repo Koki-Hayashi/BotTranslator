@@ -10,7 +10,7 @@ public class Message
 	private String text;
 
 	@JsonProperty("quick_replies")
-	private QuickReplies[] quickReplies;
+	private QuickReply[] quickReplies;
 
 	public String getText()
 	{
@@ -22,12 +22,12 @@ public class Message
 		this.text = text;
 	}
 
-	public QuickReplies[] getQuickReplies()
+	public QuickReply[] getQuickReplies()
 	{
 		return quickReplies;
 	}
 
-	public void setQuickReplies(QuickReplies[] quickReplies)
+	public void setQuickReplies(QuickReply[] quickReplies)
 	{
 		this.quickReplies = quickReplies;
 	}

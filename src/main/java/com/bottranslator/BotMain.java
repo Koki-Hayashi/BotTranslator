@@ -35,19 +35,28 @@ public class BotMain
 		});
 
 		post("/webhook", (req, res) -> { // assuming receiving only normal message
-			ObjectMapper mapper = new ObjectMapper();
-			log.info("--Request body--\n" + req.body());
-			UserMessage userMessage = mapper.readValue(req.body(), UserMessage.class);
-			log.info("--User message--\n" + userMessage);
-
-			if ("page" .equals(userMessage.getObject()))
+			try
 			{
-				Thread thread = ProcessFactory.getProcess(userMessage);
-				thread.start();
-			}
+				ObjectMapper mapper = new ObjectMapper();
+				log.info("--Request body--\n" + req.body());
+				UserMessage userMessage = mapper.readValue(req.body(), UserMessage.class);
+				log.info("--User message--\n" + userMessage);
 
-			res.status(ResponseStatus.OK.getStatusCode()); // anyway, set OK 200
-			return res;
+				if ("page".equals(userMessage.getObject()))
+				{
+					Thread thread = ProcessFactory.getProcess(userMessage);
+					thread.start();
+				}
+			}
+			catch (Exception e)
+			{
+				e.printStackTrace();
+			}
+			finally
+			{
+				res.status(ResponseStatus.OK.getStatusCode()); // anyway, set OK 200
+				return res;
+			}
 		});
 	}
 

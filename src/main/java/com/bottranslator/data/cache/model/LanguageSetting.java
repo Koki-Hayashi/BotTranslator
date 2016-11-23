@@ -7,6 +7,12 @@ public class LanguageSetting
 	private LANGUAGE from;
 	private LANGUAGE to;
 
+	public LanguageSetting(LANGUAGE from, LANGUAGE to)
+	{
+		this.from = from;
+		this.to = to;
+	}
+
 	public LANGUAGE getFrom()
 	{
 		return from;
