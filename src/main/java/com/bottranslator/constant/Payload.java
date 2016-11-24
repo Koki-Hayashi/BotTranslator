@@ -1,6 +1,6 @@
 package com.bottranslator.constant;
 
-public class Payload
+public final class Payload
 {
 	public final static String GET_STARTED_PAYLOAD = "GET_STARTED_PAYLOAD";
 	public final static String PERSISTENT_MENU_SHOW_CURRENT_SETTING = "PERSISTENT_MENU_SHOW_CURRENT_SETTING";

@@ -17,8 +17,18 @@ public class SetThreadSettingMain
 
 	MessengerApiClient messengerApiClient = new MessengerApiClient();
 
+	private void send(ThreadSetting threadSetting){
+		try
+		{
+			messengerApiClient.sendThreadSetting(threadSetting);
+		}
+		catch (UnirestException | JsonProcessingException e)
+		{
+			e.printStackTrace();
+		}
+	}
 
-	public void registerGreeting() throws JsonProcessingException
+	public void registerGreeting()
 	{
 		String welcomeText = "Hi! I'm a Translator Bot! "
 			+ "You can send me words you would like me to translate. I will reply translations to you! "
@@ -29,17 +39,10 @@ public class SetThreadSettingMain
 		greetingRegister.setSettingType("greeting");
 		greetingRegister.setGreeting(greeting);
 
-		try
-		{
-			messengerApiClient.sendThreadSetting(greetingRegister);
-		}
-		catch (UnirestException e)
-		{
-			e.printStackTrace();
-		}
+		send(greetingRegister);
 	}
 
-	public void registerGetStartedBtn() throws JsonProcessingException
+	public void registerGetStartedBtn()
 	{
 		ThreadSetting getStartedBtnRegister = new ThreadSetting();
 		getStartedBtnRegister.setSettingType("call_to_actions");
@@ -47,18 +50,11 @@ public class SetThreadSettingMain
 		CallToAction callToActions = new CallToAction();
 		callToActions.setPayload(Payload.GET_STARTED_PAYLOAD);
 		getStartedBtnRegister.setCallToActions(new CallToAction[]{ callToActions});
-
-		try
-		{
-			messengerApiClient.sendThreadSetting(getStartedBtnRegister);
-		}
-		catch (UnirestException e)
-		{
-			e.printStackTrace();
-		}
+	
+		send(getStartedBtnRegister);
 	}
 
-	public void registerPersistentMenu() throws JsonProcessingException
+	public void registerPersistentMenu()
 	{
 		ThreadSetting persistentMenu = new ThreadSetting();
 		persistentMenu.setSettingType("call_to_actions");
@@ -81,14 +77,7 @@ public class SetThreadSettingMain
 
 		persistentMenu.setCallToActions(new CallToAction[]{ currentSettings, languageFrom, languageTo});
 
-		try
-		{
-			messengerApiClient.sendThreadSetting(persistentMenu);
-		}
-		catch (UnirestException e)
-		{
-			e.printStackTrace();
-		}
+		send(persistentMenu);
 	}
 
 	public static void main(String[] args) throws IOException

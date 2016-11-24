@@ -19,7 +19,6 @@ public class BotMain
 {
 	private Logger log = LoggerFactory.getLogger(BotMain.class);
 
-	private static final String REPLY_FOR_INVALID_ACCESS = "wrong token";
 	private static final int ERROR_EXIT = 1;
 
 	private void runBotProcess()
@@ -31,7 +30,7 @@ public class BotMain
 			{
 				return req.queryParams("hub.challenge");
 			}
-			return REPLY_FOR_INVALID_ACCESS;
+			return "wrong token";
 		});
 
 		post("/webhook", (req, res) -> { // assuming receiving only normal message
