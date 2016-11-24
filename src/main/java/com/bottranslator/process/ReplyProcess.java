@@ -100,14 +100,14 @@ public class ReplyProcess extends Thread
 	private void handlePostback(Messaging messaging) throws JsonProcessingException, UnirestException
 	{
 		String payload = messaging.getPostback().getPayload();
-		if (Payload.MAIN_MENU_SHOW_CURRENT_SETTING.equals(payload)) {
+		if (Payload.PERSISTENT_MENU_SHOW_CURRENT_SETTING.equals(payload)) {
 			replyCurrentSetting(messaging);
 		}
-		else if (Payload.MAIN_MENU_CHANGE_INPUT_LANGUAGE.equals(payload))
+		else if (Payload.PERSISTENT_MENU_CHANGE_INPUT_LANGUAGE.equals(payload))
 		{
 			sendLanguageSetting(messaging, Payload.QUICK_REPLY_INPUT_LANGUAGE);
 		}
-		else if (Payload.MAIN_MENU_CHANGE_OUTPUT_LANGUAGE.equals(payload))
+		else if (Payload.PERSISTENT_MENU_CHANGE_OUTPUT_LANGUAGE.equals(payload))
 		{
 			sendLanguageSetting(messaging, Payload.QUICK_REPLY_OUTPUT_LANGUAGE);
 		}

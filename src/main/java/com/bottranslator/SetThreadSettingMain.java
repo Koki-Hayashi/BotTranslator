@@ -60,30 +60,30 @@ public class SetThreadSettingMain
 
 	public void registerPersistentMenu() throws JsonProcessingException
 	{
-		ThreadSetting peristentMEnu = new ThreadSetting();
-		peristentMEnu.setSettingType("call_to_actions");
-		peristentMEnu.setThreadState("existing_thread");
+		ThreadSetting persistentMenu = new ThreadSetting();
+		persistentMenu.setSettingType("call_to_actions");
+		persistentMenu.setThreadState("existing_thread");
 
 		CallToAction currentSettings = new CallToAction();
 		currentSettings.setType("postback");
 		currentSettings.setTitle("Show current setting");
-		currentSettings.setPayload(Payload.MAIN_MENU_SHOW_CURRENT_SETTING);
+		currentSettings.setPayload(Payload.PERSISTENT_MENU_SHOW_CURRENT_SETTING);
 
 		CallToAction languageFrom = new CallToAction();
 		languageFrom.setType("postback");
 		languageFrom.setTitle("Change input language");
-		languageFrom.setPayload(Payload.MAIN_MENU_CHANGE_INPUT_LANGUAGE);
+		languageFrom.setPayload(Payload.PERSISTENT_MENU_CHANGE_INPUT_LANGUAGE);
 
 		CallToAction languageTo = new CallToAction();
 		languageTo.setType("postback");
 		languageTo.setTitle("Change output language");
-		languageTo.setPayload(Payload.MAIN_MENU_CHANGE_OUTPUT_LANGUAGE);
+		languageTo.setPayload(Payload.PERSISTENT_MENU_CHANGE_OUTPUT_LANGUAGE);
 
-		peristentMEnu.setCallToActions(new CallToAction[]{ currentSettings, languageFrom, languageTo});
+		persistentMenu.setCallToActions(new CallToAction[]{ currentSettings, languageFrom, languageTo});
 
 		try
 		{
-			messengerApiClient.sendThreadSetting(peristentMEnu);
+			messengerApiClient.sendThreadSetting(persistentMenu);
 		}
 		catch (UnirestException e)
 		{
