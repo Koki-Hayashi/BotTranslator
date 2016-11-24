@@ -20,7 +20,9 @@ public class SetThreadSettingMain
 
 	public void registerGreeting() throws JsonProcessingException
 	{
-		String welcomeText = "Hi! I'm a Translator Bot";
+		String welcomeText = "Hi! I'm a Translator Bot! "
+			+ "You can send me words you would like me to translate. I will reply translations to you! "
+			+ "Default translation setting is from English to German. You can check/change settings from main menu anytime.";
 
 		Greeting greeting = new Greeting(welcomeText);
 		ThreadSetting greetingRegister = new ThreadSetting();
