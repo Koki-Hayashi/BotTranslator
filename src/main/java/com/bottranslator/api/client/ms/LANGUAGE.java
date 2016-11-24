@@ -5,18 +5,24 @@ package com.bottranslator.api.client.ms;
  */
 public enum LANGUAGE
 {
-	ENGLISH("ENGLISH", "en"),
-	GERMAN("GERMAN", "de"),
-	JAPANESE("JAPANESE", "ja"),
-	RUSSIAN("RUSSIAN", "ru");
+	ENGLISH("English", "en"),
+	GERMAN("German", "de"),
+	JAPANESE("Japanese", "ja"),
+	RUSSIAN("Russian", "ru"),
+	SPANISH("Spanish", "es"),
+	ITALIAN("Italian", "it"),
+	HUNGARIAN("Hungarian", "hu"),
+	NORWEGIAN("Norwegian", "no"),
+	SERBIAN("Serbian", "sr-Cyrl"),
+	ARABIC("Arabic", "ar");
 
 	private String name;
-	private String countryCode;
+	private String languageCode;
 
-	LANGUAGE(String name, String countryCode)
+	LANGUAGE(String name, String languageCode)
 	{
 		this.name = name;
-		this.countryCode = countryCode;
+		this.languageCode = languageCode;
 	}
 
 	private static final String[] nameArray = new String[LANGUAGE.values().length];
@@ -40,9 +46,9 @@ public enum LANGUAGE
 		return name;
 	}
 
-	public String getCountryCode()
+	public String getLanguageCode()
 	{
-		return countryCode;
+		return languageCode;
 	}
 
 	public static LANGUAGE getFromName(String name) {

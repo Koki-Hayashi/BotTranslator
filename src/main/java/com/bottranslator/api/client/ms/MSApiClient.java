@@ -35,8 +35,8 @@ public class MSApiClient
 			.header("Accept", "application/xml")
 			.queryString("appId", APPID_PREFIX + AuthKeyService.getAuthKey())
 			.queryString("text", text)
-			.queryString("from", from.getCountryCode())
-			.queryString("to", to.getCountryCode()).asString();
+			.queryString("from", from.getLanguageCode())
+			.queryString("to", to.getLanguageCode()).asString();
 
 		InputSource inputSource = new InputSource(new StringReader(response.getBody()));
 		Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(inputSource);
