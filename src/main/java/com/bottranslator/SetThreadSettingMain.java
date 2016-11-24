@@ -62,6 +62,11 @@ public class SetThreadSettingMain
 		peristentMEnu.setSettingType("call_to_actions");
 		peristentMEnu.setThreadState("existing_thread");
 
+		CallToAction currentSettings = new CallToAction();
+		currentSettings.setType("postback");
+		currentSettings.setTitle("Show current setting");
+		currentSettings.setPayload(Payload.MAIN_MENU_SHOW_CURRENT_SETTING);
+
 		CallToAction languageFrom = new CallToAction();
 		languageFrom.setType("postback");
 		languageFrom.setTitle("Change input language");
@@ -72,7 +77,7 @@ public class SetThreadSettingMain
 		languageTo.setTitle("Change output language");
 		languageTo.setPayload(Payload.MAIN_MENU_CHANGE_OUTPUT_LANGUAGE);
 
-		peristentMEnu.setCallToActions(new CallToAction[]{ languageFrom, languageTo});
+		peristentMEnu.setCallToActions(new CallToAction[]{ currentSettings, languageFrom, languageTo});
 
 		try
 		{

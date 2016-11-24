@@ -62,7 +62,7 @@ public class ReplyProcess extends Thread
 						if (message == null) return; // not supported
 						if(message.getQuickReply() != null){
 							updateLanguageSetting(messaging);
-							replyMessage(messaging, "Setting updated");
+							replyCurrentSetting(messaging);
 							return;
 						}
 
@@ -82,7 +82,7 @@ public class ReplyProcess extends Thread
 		String senderId = messaging.getSender().getId();
 		LanguageSetting setting = cache.get(senderId);
 		if(setting == null) {
-			setting = new LanguageSetting(LANGUAGE.ENGLISH, LANGUAGE.GERMAN);
+			setting = createDefaultSetting();
 		}
 		String payload = messaging.getMessage().getQuickReply().getPayload();
 		String text = messaging.getMessage().getText();
@@ -100,11 +100,33 @@ public class ReplyProcess extends Thread
 	private void handlePostback(Messaging messaging) throws JsonProcessingException, UnirestException
 	{
 		String payload = messaging.getPostback().getPayload();
-		if (Payload.MAIN_MENU_CHANGE_INPUT_LANGUAGE.equals(payload)) {
+		if (Payload.MAIN_MENU_SHOW_CURRENT_SETTING.equals(payload)) {
+			replyCurrentSetting(messaging);
+		}
+		else if (Payload.MAIN_MENU_CHANGE_INPUT_LANGUAGE.equals(payload))
+		{
 			sendLanguageSetting(messaging, Payload.QUICK_REPLY_INPUT_LANGUAGE);
-		} else if (Payload.MAIN_MENU_CHANGE_OUTPUT_LANGUAGE.equals(payload)) {
+		}
+		else if (Payload.MAIN_MENU_CHANGE_OUTPUT_LANGUAGE.equals(payload))
+		{
 			sendLanguageSetting(messaging, Payload.QUICK_REPLY_OUTPUT_LANGUAGE);
 		}
+	}
+
+	private LanguageSetting createDefaultSetting()
+	{
+		return new LanguageSetting(LANGUAGE.ENGLISH, LANGUAGE.GERMAN);
+	}
+
+	private void replyCurrentSetting(Messaging messaging) throws JsonProcessingException, UnirestException
+	{
+		String senderId = messaging.getSender().getId();
+		LanguageSetting setting = cache.get(senderId);
+		if (setting == null) {
+			setting = createDefaultSetting();
+		}
+
+		replyMessage(senderId, "Translate from " + setting.getFrom().getName() + " to " + setting.getTo().getName());
 	}
 
 	private void sendLanguageSetting(Messaging messaging, String payload) throws JsonProcessingException, UnirestException
@@ -139,7 +161,7 @@ public class ReplyProcess extends Thread
 		String senderId = messaging.getSender().getId();
 		LanguageSetting setting = cache.get(senderId);
 		if (setting == null) {
-			setting = new LanguageSetting(LANGUAGE.ENGLISH, LANGUAGE.GERMAN);
+			setting = createDefaultSetting();
 			cache.put(senderId, setting);
 		}
 

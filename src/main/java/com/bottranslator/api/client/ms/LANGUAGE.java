@@ -5,8 +5,8 @@ package com.bottranslator.api.client.ms;
  */
 public enum LANGUAGE
 {
-	ENGLISH("English", "en"),
-	GERMAN("German", "de"),
+	ENGLISH("ENGLISH", "en"),
+	GERMAN("GERMAN", "de"),
 	JAPANESE("JAPANESE", "ja"),
 	RUSSIAN("RUSSIAN", "ru");
 
