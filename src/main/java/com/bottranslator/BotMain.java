@@ -1,5 +1,8 @@
 package com.bottranslator;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -20,6 +23,7 @@ public class BotMain
 	private Logger log = LoggerFactory.getLogger(BotMain.class);
 
 	private static final int ERROR_EXIT = 1;
+	private final ExecutorService executor = Executors.newCachedThreadPool();
 
 	private void runBotProcess()
 	{
@@ -44,7 +48,7 @@ public class BotMain
 				if ("page".equals(userMessage.getObject()))
 				{
 					Thread thread = ProcessFactory.getProcess(userMessage);
-					thread.start();
+					executor.execute(thread);
 				}
 			}
 			catch (Exception e)

@@ -50,7 +50,7 @@ public class SetThreadSettingMain
 		CallToAction callToActions = new CallToAction();
 		callToActions.setPayload(Payload.GET_STARTED_PAYLOAD);
 		getStartedBtnRegister.setCallToActions(new CallToAction[]{ callToActions});
-	
+
 		send(getStartedBtnRegister);
 	}
 
